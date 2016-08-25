@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author jay
  */
-public class UserConfig implements Serializable{
+public class UserConfig implements Serializable {
     private String name;
     private String password;
     private List<String> roles;
@@ -32,29 +32,36 @@ public class UserConfig implements Serializable{
         this.password = password;
         this.roles = roles;
     }
-    public UserConfig(){
+
+    public UserConfig() {
 
     }
+
     @JsonProperty
     public String getPassword() {
         return password;
     }
+
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
+
     @JsonProperty
     public String getName() {
         return name;
     }
+
     @JsonProperty
     public void setName(String name) {
         this.name = name;
     }
+
     @JsonProperty
     public List<String> getRoles() {
         return roles;
     }
+
     @JsonProperty
     public void setRoles(List<String> roles) {
         this.roles = roles;

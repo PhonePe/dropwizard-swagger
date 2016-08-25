@@ -25,9 +25,11 @@ import java.util.*;
 /**
  * @author jay
  */
+
 public class SimpleAuthenticator implements Authenticator<BasicCredentials, SwaggerUser> {
+
     /**
-     * Valid users with mapping user -> roles
+     * Valid users with mapping user -> roles and user->password (hash)
      */
     private Map<String, Set<String>> userRolesMap;
     private Map<String, String> userPasswordMap;
@@ -35,9 +37,9 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, Swag
     public SimpleAuthenticator(List<UserConfig> users) {
         this.userRolesMap = new HashMap<>();
         this.userPasswordMap = new HashMap<>();
-        for(UserConfig currentConfig : users){
-            userRolesMap.put(currentConfig.getName(),new HashSet<>(currentConfig.getRoles()));
-            userPasswordMap.put(currentConfig.getName(),currentConfig.getPassword());
+        for (UserConfig currentConfig : users) {
+            userRolesMap.put(currentConfig.getName(), new HashSet<>(currentConfig.getRoles()));
+            userPasswordMap.put(currentConfig.getName(), currentConfig.getPassword());
 
         }
     }
@@ -50,20 +52,20 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, Swag
         return Optional.empty();
     }
 
-    private String encryptPassword(String password){
+    private String encryptPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(password.getBytes());
 
             byte byteData[] = md.digest();
 
-            //convert the byte to hex format method 1
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < byteData.length; i++) {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
+            //In case of exception return an empty string
             return "";
         }
     }

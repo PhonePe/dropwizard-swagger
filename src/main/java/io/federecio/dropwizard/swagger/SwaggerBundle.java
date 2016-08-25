@@ -37,32 +37,32 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
  * configuration of Swagger and Swagger UI on top of Dropwizard.
  */
 public abstract class SwaggerBundle<T extends Configuration>
-        implements ConfiguredBundle<T> {
+    implements ConfiguredBundle<T> {
 
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
         bootstrap.addBundle(new ViewBundle<Configuration>());
         ModelConverters.getInstance()
-                .addConverter(new ModelResolver(bootstrap.getObjectMapper()));
+            .addConverter(new ModelResolver(bootstrap.getObjectMapper()));
     }
 
     @Override
     public void run(T configuration, Environment environment) throws Exception {
         final SwaggerBundleConfiguration swaggerBundleConfiguration = getSwaggerBundleConfiguration(
-                configuration);
+            configuration);
         if (swaggerBundleConfiguration == null) {
             throw new IllegalStateException(
-                    "You need to provide an instance of SwaggerBundleConfiguration");
+                "You need to provide an instance of SwaggerBundleConfiguration");
         }
 
-        if (! swaggerBundleConfiguration.isEnabled()) {
+        if (!swaggerBundleConfiguration.isEnabled()) {
             return;
         }
 
         final ConfigurationHelper configurationHelper = new ConfigurationHelper(
-                configuration, swaggerBundleConfiguration);
+            configuration, swaggerBundleConfiguration);
 
-        if(swaggerBundleConfiguration.getAuth() != null && swaggerBundleConfiguration.getAuth().getUsers().size() > 0) {
+        if (swaggerBundleConfiguration.getAuth() != null && swaggerBundleConfiguration.getAuth().getUsers().size() > 0) {
             environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<SwaggerUser>()
                 .setAuthenticator(new SimpleAuthenticator(swaggerBundleConfiguration.getAuth().getUsers()))
                 .setAuthorizer(new SimpleAuthorizer())
@@ -72,18 +72,18 @@ public abstract class SwaggerBundle<T extends Configuration>
             environment.jersey().register(RolesAllowedDynamicFeature.class);
         }
         new AssetsBundle("/swagger-static",
-                configurationHelper.getSwaggerUriPath(), null, "swagger-assets")
-                        .run(environment);
+            configurationHelper.getSwaggerUriPath(), null, "swagger-assets")
+            .run(environment);
 
         swaggerBundleConfiguration.build(configurationHelper.getUrlPattern());
 
         environment.jersey().register(new ApiListingResource());
         environment.jersey().register(new SwaggerSerializers());
         environment.jersey().register(new SwaggerResource(
-                configurationHelper.getUrlPattern(),
-                swaggerBundleConfiguration.getSwaggerViewConfiguration()));
+            configurationHelper.getUrlPattern(),
+            swaggerBundleConfiguration.getSwaggerViewConfiguration()));
     }
 
     protected abstract SwaggerBundleConfiguration getSwaggerBundleConfiguration(
-            T configuration);
+        T configuration);
 }
