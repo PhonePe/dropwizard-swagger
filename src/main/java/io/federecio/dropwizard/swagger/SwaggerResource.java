@@ -14,6 +14,10 @@
  */
 package io.federecio.dropwizard.swagger;
 
+import io.dropwizard.auth.Auth;
+import io.federecio.dropwizard.swagger.auth.SwaggerUser;
+
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,7 +35,8 @@ public class SwaggerResource {
     }
 
     @GET
-    public SwaggerView get() {
+    @RolesAllowed("ADMIN")
+    public SwaggerView get(@Auth SwaggerUser user) {
         return new SwaggerView(urlPattern, config);
     }
 }

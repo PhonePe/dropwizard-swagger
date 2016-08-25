@@ -14,6 +14,7 @@
  */
 package io.federecio.dropwizard.swagger;
 
+import io.federecio.dropwizard.swagger.auth.AuthConfig;
 import io.swagger.models.Contact;
 import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -52,6 +53,7 @@ public class SwaggerBundleConfiguration {
     private String host;
     private String[] schemes = new String[] { "http" };
     private Boolean enabled = true;
+    private AuthConfig auth;
 
     /**
      * For most of the scenarios this property is not needed.
@@ -264,7 +266,14 @@ public class SwaggerBundleConfiguration {
                 config.getInfo().getContact().setUrl(contactUrl);
             }
         }
-
         return config;
+    }
+    @JsonProperty
+    public AuthConfig getAuth() {
+        return auth;
+    }
+    @JsonProperty
+    public void setAuth(AuthConfig auth) {
+        this.auth = auth;
     }
 }

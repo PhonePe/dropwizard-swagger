@@ -17,13 +17,20 @@ package io.federecio.dropwizard.swagger;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import io.federecio.dropwizard.swagger.auth.SimpleAuthenticator;
+import io.federecio.dropwizard.swagger.auth.SimpleAuthorizer;
+import io.federecio.dropwizard.swagger.auth.SwaggerUser;
 import io.swagger.converter.ModelConverters;
 import io.swagger.jackson.ModelResolver;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 /**
  * A {@link io.dropwizard.ConfiguredBundle} that provides hassle-free
@@ -54,6 +61,16 @@ public abstract class SwaggerBundle<T extends Configuration>
 
         final ConfigurationHelper configurationHelper = new ConfigurationHelper(
                 configuration, swaggerBundleConfiguration);
+
+        if(swaggerBundleConfiguration.getAuth() != null && swaggerBundleConfiguration.getAuth().getUsers().size() > 0) {
+            environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<SwaggerUser>()
+                .setAuthenticator(new SimpleAuthenticator(swaggerBundleConfiguration.getAuth().getUsers()))
+                .setAuthorizer(new SimpleAuthorizer())
+                .setRealm("SUPER SECRET STUFF")
+                .buildAuthFilter()));
+            environment.jersey().register(new AuthValueFactoryProvider.Binder<>(SwaggerUser.class));
+            environment.jersey().register(RolesAllowedDynamicFeature.class);
+        }
         new AssetsBundle("/swagger-static",
                 configurationHelper.getSwaggerUriPath(), null, "swagger-assets")
                         .run(environment);
