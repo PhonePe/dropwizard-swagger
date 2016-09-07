@@ -15,6 +15,7 @@
 package io.federecio.dropwizard.swagger;
 
 import io.dropwizard.auth.Auth;
+import io.federecio.dropwizard.swagger.auth.SwaggerRoles;
 import io.federecio.dropwizard.swagger.auth.SwaggerUser;
 
 import javax.annotation.security.RolesAllowed;
@@ -35,8 +36,11 @@ public class SwaggerResource {
     }
 
     @GET
-    @RolesAllowed("ADMIN")
+    @RolesAllowed({"ADMIN","DEVELOPER"})
     public SwaggerView get(@Auth SwaggerUser user) {
-        return new SwaggerView(urlPattern, config);
+        boolean readOnly = true;
+        if(user.getRoles().contains("ADMIN"))
+            readOnly = false;
+        return new SwaggerView(urlPattern, config, readOnly);
     }
 }

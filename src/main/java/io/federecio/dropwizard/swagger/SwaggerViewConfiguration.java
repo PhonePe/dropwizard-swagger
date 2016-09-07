@@ -29,6 +29,7 @@ public class SwaggerViewConfiguration {
     private boolean showApiSelector;
     private boolean showAuth;
     private String headerColor;
+    private boolean isUiReadOnly;
 
     public SwaggerViewConfiguration() {
         this.pageTitle = DEFAULT_TITLE;
@@ -37,6 +38,15 @@ public class SwaggerViewConfiguration {
         this.showApiSelector = true;
         this.showAuth = true;
         this.headerColor = DEFAULT_HEADER_COLOR;
+        this.isUiReadOnly = false;
+    }
+
+    public boolean isUiReadOnly() {
+        return isUiReadOnly;
+    }
+
+    public void setUiReadOnly(boolean uiReadOnly) {
+        isUiReadOnly = uiReadOnly;
     }
 
     public String getHeaderColor() {

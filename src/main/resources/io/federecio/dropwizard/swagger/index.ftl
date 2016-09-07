@@ -64,7 +64,9 @@
             });
             */
           }
-
+          if(${isUiReadOnly?c}){
+            $("form :input").attr("disabled","disabled");
+          }
           if(window.SwaggerTranslator) {
             window.SwaggerTranslator.translate();
           }
