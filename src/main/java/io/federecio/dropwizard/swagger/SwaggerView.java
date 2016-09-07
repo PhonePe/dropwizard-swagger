@@ -52,6 +52,14 @@ public class SwaggerView extends View {
         this.viewConfiguration = config;
     }
 
+
+    /**
+     * Returns the environment, used to determine the background color of the header
+     */
+    public String getHeaderColor() {
+        return viewConfiguration.getHeaderColor();
+    }
+
     /**
      * Returns the title for the browser header
      */
