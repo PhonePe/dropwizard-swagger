@@ -15,7 +15,6 @@
 package io.federecio.dropwizard.swagger;
 
 import io.dropwizard.auth.Auth;
-import io.federecio.dropwizard.swagger.auth.SwaggerRoles;
 import io.federecio.dropwizard.swagger.auth.SwaggerUser;
 
 import javax.annotation.security.RolesAllowed;
