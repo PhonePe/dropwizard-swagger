@@ -21,12 +21,15 @@ public class SwaggerViewConfiguration {
 
     private static final String DEFAULT_TITLE = "Swagger UI";
     private static final String DEFAULT_TEMPLATE = "index.ftl";
+    private static final String DEFAULT_HEADER_COLOR = "#89bf04";
 
     private String pageTitle;
     private String templateUrl;
     private String validatorUrl;
     private boolean showApiSelector;
     private boolean showAuth;
+    private String headerColor;
+    private boolean isUiReadOnly;
 
     public SwaggerViewConfiguration() {
         this.pageTitle = DEFAULT_TITLE;
@@ -34,6 +37,24 @@ public class SwaggerViewConfiguration {
         this.validatorUrl = null;
         this.showApiSelector = true;
         this.showAuth = true;
+        this.headerColor = DEFAULT_HEADER_COLOR;
+        this.isUiReadOnly = false;
+    }
+
+    public boolean isUiReadOnly() {
+        return isUiReadOnly;
+    }
+
+    public void setUiReadOnly(boolean uiReadOnly) {
+        isUiReadOnly = uiReadOnly;
+    }
+
+    public String getHeaderColor() {
+        return headerColor;
+    }
+
+    public void setHeaderColor(String headerColor) {
+        this.headerColor = headerColor;
     }
 
     public String getPageTitle() {

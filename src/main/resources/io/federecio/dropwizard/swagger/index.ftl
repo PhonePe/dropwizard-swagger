@@ -64,7 +64,9 @@
             });
             */
           }
-
+          if(${isUiReadOnly?c}){
+            $("form :input").attr("disabled","disabled");
+          }
           if(window.SwaggerTranslator) {
             window.SwaggerTranslator.translate();
           }
@@ -136,7 +138,7 @@
 </head>
 
 <body class="swagger-section">
-<div id='header'>
+<div id='header' style="background-color: ${headerColor}">
   <div class="swagger-ui-wrap">
     <a id="logo" href="http://swagger.io"><img class="logo__img" alt="swagger" height="30" width="30" src="${swaggerAssetsPath}/images/logo_small.png" /><span class="logo__title">swagger</span></a>
     <form id='api_selector'>

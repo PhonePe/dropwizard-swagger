@@ -14,13 +14,14 @@
  */
 package io.federecio.dropwizard.swagger;
 
-import io.swagger.models.Contact;
-import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+import io.federecio.dropwizard.swagger.auth.AuthConfig;
 import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.models.Contact;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * For the meaning of all these properties please refer to Swagger documentation
@@ -50,8 +51,9 @@ public class SwaggerBundleConfiguration {
     private SwaggerViewConfiguration swaggerViewConfiguration = new SwaggerViewConfiguration();
     private Boolean prettyPrint = true;
     private String host;
-    private String[] schemes = new String[] { "http" };
+    private String[] schemes = new String[]{"http"};
     private Boolean enabled = true;
+    private AuthConfig auth;
 
     /**
      * For most of the scenarios this property is not needed.
@@ -184,7 +186,7 @@ public class SwaggerBundleConfiguration {
 
     @JsonProperty
     public void setSwaggerViewConfiguration(
-            final SwaggerViewConfiguration swaggerViewConfiguration) {
+        final SwaggerViewConfiguration swaggerViewConfiguration) {
         this.swaggerViewConfiguration = swaggerViewConfiguration;
     }
 
@@ -232,8 +234,8 @@ public class SwaggerBundleConfiguration {
     public BeanConfig build(String urlPattern) {
         if (Strings.isNullOrEmpty(resourcePackage)) {
             throw new IllegalStateException(
-                    "Resource package needs to be specified"
-                            + " for Swagger to correctly detect annotated resources");
+                "Resource package needs to be specified"
+                    + " for Swagger to correctly detect annotated resources");
         }
 
         final BeanConfig config = new BeanConfig();
@@ -264,7 +266,16 @@ public class SwaggerBundleConfiguration {
                 config.getInfo().getContact().setUrl(contactUrl);
             }
         }
-
         return config;
+    }
+
+    @JsonProperty
+    public AuthConfig getAuth() {
+        return auth;
+    }
+
+    @JsonProperty
+    public void setAuth(AuthConfig auth) {
+        this.auth = auth;
     }
 }

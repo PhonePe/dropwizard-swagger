@@ -34,7 +34,7 @@ public class SwaggerView extends View {
     private final SwaggerViewConfiguration viewConfiguration;
 
     public SwaggerView(@Nonnull final String urlPattern,
-            @Nonnull SwaggerViewConfiguration config) {
+            @Nonnull SwaggerViewConfiguration config, boolean isUiReadOnly) {
         super(config.getTemplateUrl(), StandardCharsets.UTF_8);
 
         if (urlPattern.equals("/")) {
@@ -50,6 +50,21 @@ public class SwaggerView extends View {
         }
 
         this.viewConfiguration = config;
+        this.viewConfiguration.setUiReadOnly(isUiReadOnly);
+    }
+
+    /**
+     * Returns the boolean specifying if the Form controls are enabled or not
+     */
+    public boolean getIsUiReadOnly() {
+        return viewConfiguration.isUiReadOnly();
+    }
+
+    /**
+     * Returns the environment, used to determine the background color of the header
+     */
+    public String getHeaderColor() {
+        return viewConfiguration.getHeaderColor();
     }
 
     /**
