@@ -21,14 +21,14 @@ import java.util.List;
  * @author jay
  */
 public class AuthConfig {
-    List<UserConfig> users;
+    private List<UserConfig> users = new ArrayList<>();
 
     public AuthConfig(List<UserConfig> users) {
         this.users = users;
     }
 
     public AuthConfig() {
-        this.users = new ArrayList<>();
+
     }
 
     public List<UserConfig> getUsers() {

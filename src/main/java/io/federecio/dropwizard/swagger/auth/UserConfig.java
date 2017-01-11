@@ -17,6 +17,7 @@ package io.federecio.dropwizard.swagger.auth;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
 public class UserConfig implements Serializable {
     private String name;
     private String password;
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 
     public UserConfig(String name, String password, List<String> roles) {
         this.name = name;
