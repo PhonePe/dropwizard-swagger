@@ -67,6 +67,13 @@
           if(${isUiReadOnly?c}){
             $("form :input").attr("disabled","disabled");
           }
+          if(${isShowOnlyGet?c}){
+            $(".endpoint").each(function(index){
+                            var method = $(this).find(".toggleOperation").first().html();
+                            if(method != "get"){
+                                $(this).hide();
+                            }});
+          }
           if(window.SwaggerTranslator) {
             window.SwaggerTranslator.translate();
           }
