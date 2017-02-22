@@ -37,13 +37,16 @@ public class SwaggerResource {
     @GET
     @RolesAllowed({"ADMIN","DEVELOPER","OPERATOR"})
     public SwaggerView get(@Auth SwaggerUser user) {
-        boolean readOnly = true;
+        boolean readOnly = false;
         boolean showOnlyGet = false;
-        if(user.getRoles().contains("ADMIN")) {
-            readOnly = false;
-        }
-        if(user.getRoles().contains("OPERATOR")) {
-            showOnlyGet = true;
+        if(user != null) {
+            readOnly = true;
+            if (user.getRoles().contains("ADMIN")) {
+                readOnly = false;
+            }
+            if (user.getRoles().contains("OPERATOR")) {
+                showOnlyGet = true;
+            }
         }
         return new SwaggerView(urlPattern, config, readOnly, showOnlyGet);
     }
