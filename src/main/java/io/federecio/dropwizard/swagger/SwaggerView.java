@@ -34,7 +34,7 @@ public class SwaggerView extends View {
     private final SwaggerViewConfiguration viewConfiguration;
 
     public SwaggerView(@Nonnull final String urlPattern,
-            @Nonnull SwaggerViewConfiguration config, boolean isUiReadOnly) {
+            @Nonnull SwaggerViewConfiguration config, boolean isUiReadOnly, boolean showOnlyGet) {
         super(config.getTemplateUrl(), StandardCharsets.UTF_8);
 
         if (urlPattern.equals("/")) {
@@ -51,6 +51,7 @@ public class SwaggerView extends View {
 
         this.viewConfiguration = config;
         this.viewConfiguration.setUiReadOnly(isUiReadOnly);
+        this.viewConfiguration.setShowOnlyGet(showOnlyGet);
     }
 
     /**
@@ -58,6 +59,13 @@ public class SwaggerView extends View {
      */
     public boolean getIsUiReadOnly() {
         return viewConfiguration.isUiReadOnly();
+    }
+
+    /**
+     * Returns the boolean specifying if the API elements other than GET are to be rendered or not
+     */
+    public boolean getIsShowOnlyGet() {
+        return viewConfiguration.isShowOnlyGet();
     }
 
     /**
