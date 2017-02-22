@@ -15,6 +15,7 @@
 package io.federecio.dropwizard.swagger.auth;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,11 +24,10 @@ import java.util.Set;
 public class SwaggerUser implements Principal {
     private final String name;
 
-    private final Set<String> roles;
+    private Set<String> roles = new HashSet<>();
 
     public SwaggerUser(String name) {
         this.name = name;
-        this.roles = null;
     }
 
     public SwaggerUser(String name, Set<String> roles) {
