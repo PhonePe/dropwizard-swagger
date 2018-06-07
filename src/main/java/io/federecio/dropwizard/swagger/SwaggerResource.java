@@ -32,8 +32,8 @@ public class SwaggerResource {
     private final String urlPattern;
 
     public SwaggerResource(String urlPattern,
-            SwaggerViewConfiguration viewConfiguration,
-            SwaggerOAuth2Configuration oAuth2Configuration) {
+                           SwaggerViewConfiguration viewConfiguration,
+                           SwaggerOAuth2Configuration oAuth2Configuration) {
         this.urlPattern = urlPattern;
         this.viewConfiguration = viewConfiguration;
         this.oAuth2Configuration = oAuth2Configuration;
@@ -56,14 +56,11 @@ public class SwaggerResource {
         boolean readOnly = false;
         boolean showOnlyGet = false;
         if(user != null) {
-            readOnly = true;
-            if (user.getRoles().contains("ADMIN")) {
-                readOnly = false;
-            }
+            readOnly = !user.getRoles().contains("ADMIN");
             if (user.getRoles().contains("OPERATOR")) {
                 showOnlyGet = true;
             }
         }
-        return new SwaggerView(urlPattern, viewConfiguration, readOnly, showOnlyGet);
+        return new SwaggerView(contextRoot, urlPattern, viewConfiguration, oAuth2Configuration, readOnly, showOnlyGet);
     }
 }

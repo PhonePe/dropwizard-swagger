@@ -34,24 +34,31 @@ public class SwaggerView extends View {
     private final String contextPath;
 
     private final SwaggerViewConfiguration viewConfiguration;
+    private final SwaggerOAuth2Configuration oauth2Configuration;
 
-    public SwaggerView(@Nonnull final String urlPattern,
-            @Nonnull SwaggerViewConfiguration config, boolean isUiReadOnly, boolean showOnlyGet) {
+    public SwaggerView(@Nonnull final String contextRoot,
+                       @Nonnull final String urlPattern,
+                       @Nonnull SwaggerViewConfiguration config,
+                       @Nonnull SwaggerOAuth2Configuration oauth2Configuration,
+                       boolean isUiReadOnly,
+                       boolean showOnlyGet) {
         super(config.getTemplateUrl(), StandardCharsets.UTF_8);
 
-        if (urlPattern.equals("/")) {
-            swaggerAssetsPath = SWAGGER_URI_PATH;
+        String contextRootPrefix = "/".equals(contextRoot) ? "" : contextRoot;
+
+        // swagger-static should be found on the root context
+        if (!contextRootPrefix.isEmpty()) {
+            swaggerAssetsPath = contextRootPrefix + SWAGGER_URI_PATH;
         } else {
-            swaggerAssetsPath = urlPattern + SWAGGER_URI_PATH;
+            swaggerAssetsPath = (urlPattern.equals("/") ? SWAGGER_URI_PATH
+                    : (urlPattern + SWAGGER_URI_PATH));
         }
 
-        if (urlPattern.equals("/")) {
-            contextPath = "";
-        } else {
-            contextPath = urlPattern;
-        }
+        contextPath = urlPattern.equals("/") ? contextRootPrefix
+            : (contextRootPrefix + urlPattern);
 
         this.viewConfiguration = config;
+        this.oauth2Configuration = oauth2Configuration;
         this.viewConfiguration.setUiReadOnly(isUiReadOnly);
         this.viewConfiguration.setShowOnlyGet(showOnlyGet);
     }
@@ -123,4 +130,11 @@ public class SwaggerView extends View {
         return viewConfiguration.isShowApiSelector();
     }
 
+    /**
+     * @return {@link SwaggerOAuth2Configuration} containing every properties to
+     *         init oauth2
+     */
+    public SwaggerOAuth2Configuration getOauth2Configuration() {
+        return oauth2Configuration;
+    }
 }
