@@ -5,9 +5,9 @@ dropwizard-swagger
 [![Maven Central](https://img.shields.io/maven-central/v/com.smoketurner/dropwizard-swagger.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.smoketurner/dropwizard-swagger/)
 [![GitHub license](https://img.shields.io/github/license/smoketurner/dropwizard-swagger.svg?style=flat-square)](https://github.com/smoketurner/dropwizard-swagger/tree/master)
 
-a Dropwizard bundle that serves Swagger UI static content and loads Swagger endpoints. Swagger UI static content is taken from https://github.com/swagger-api/swagger-ui
+A Dropwizard bundle that serves Swagger UI static content and loads Swagger endpoints. Swagger UI static content is taken from https://github.com/swagger-api/swagger-ui
 
-Current version has been tested with Dropwizard 1.0.0 and Swagger 1.5.10 which supports Swagger 2 spec!
+Current version has been tested with Dropwizard 1.1.2 and Swagger 1.5.16 which supports Swagger 2 spec!
 
 Note: if you come from previous versions there have been some changes in the way the bundle is configured, see details below.
 
@@ -27,7 +27,8 @@ dropwizard-swagger| Dropwizard |Swagger API|Swagger UI
        0.7.x      |   0.8.x    |   1.5.1-M2| v2.1.4-M1
        0.7.2      |   0.8.4    |   1.5.3   | v2.1.2
        0.9.x      |   0.9.x    |   1.5.9   | v2.1.5
-       1.0.x      |   1.0.x    |   1.5.10  | v2.2.1
+       1.0.x      |   1.0.x    |   1.5.12  | v2.2.10
+       1.1.x      |   1.1.x    |   1.5.16  | v2.2.10
 
 How to use it
 -------------
@@ -38,7 +39,7 @@ How to use it
 <dependency>
     <groupId>com.smoketurner</groupId>
     <artifactId>dropwizard-swagger</artifactId>
-    <version>1.0.0-1</version>
+    <version>1.1.1-1</version>
 </dependency>
 ```
 
@@ -68,23 +69,18 @@ swagger:
 ```java
 @Override
 public void initialize(Bootstrap<YourConfiguration> bootstrap) {
-    bootstrap.addBundle(new SwaggerBundle<TestConfiguration>() {
-
-    @Override
-    protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(YourConfiguration configuration) {
-        return configuration.swaggerBundleConfiguration;
-    }
-});
+    bootstrap.addBundle(new SwaggerBundle<YourConfiguration>() {
+        @Override
+        protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(YourConfiguration configuration) {
+            return configuration.swaggerBundleConfiguration;
+        }
+    });
+}
 ```
 
 * As usual, add Swagger annotations to your resource classes and methods
 
 * Open a browser and hit `http://localhost:<your_port>/swagger`
-
-Sample Application
-------------------
-
-Take a look at this sample application that shows how to integrate DropWizard and Swagger: [dropwizard-swagger-sample-app](https://github.com/federecio/dropwizard-swagger-sample-app)
 
 Additional Swagger configuration
 --------------------------------
@@ -109,4 +105,3 @@ Contributors
 * Matt Carrier [mattcarrier] (https://github.com/mattcarrier)
 * Justin Plock [jplock] (https://github.com/jplock)
 * Ian Rogers [IanRogers-LShift] (https://github.com/IanRogers-LShift)
-

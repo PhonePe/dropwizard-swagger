@@ -26,6 +26,7 @@ import io.dropwizard.views.ViewBundle;
 import io.federecio.dropwizard.swagger.auth.SimpleAuthenticator;
 import io.federecio.dropwizard.swagger.auth.SimpleAuthorizer;
 import io.federecio.dropwizard.swagger.auth.SwaggerUser;
+import io.swagger.config.FilterFactory;
 import io.swagger.converter.ModelConverters;
 import io.swagger.jackson.ModelResolver;
 import io.swagger.jaxrs.listing.ApiListingResource;
@@ -75,13 +76,25 @@ public abstract class SwaggerBundle<T extends Configuration>
             configurationHelper.getSwaggerUriPath(), null, "swagger-assets")
             .run(environment);
 
+        new AssetsBundle("/swagger-static/oauth2-redirect.html",
+                configurationHelper.getOAuth2RedirectUriPath(), null, "swagger-oauth2-connect")
+                        .run(environment);
+
         swaggerBundleConfiguration.build(configurationHelper.getUrlPattern());
+
+        FilterFactory.setFilter(new AuthParamFilter());
 
         environment.jersey().register(new ApiListingResource());
         environment.jersey().register(new SwaggerSerializers());
-        environment.jersey().register(new SwaggerResource(
-            configurationHelper.getUrlPattern(),
-            swaggerBundleConfiguration.getSwaggerViewConfiguration()));
+        if (swaggerBundleConfiguration.isIncludeSwaggerResource()) {
+            environment.jersey()
+                    .register(new SwaggerResource(
+                            configurationHelper.getUrlPattern(),
+                            swaggerBundleConfiguration
+                                    .getSwaggerViewConfiguration(),
+                            swaggerBundleConfiguration.getSwaggerOAuth2Configuration(),
+                            swaggerBundleConfiguration.getContextRoot()));
+        }
     }
 
     protected abstract SwaggerBundleConfiguration getSwaggerBundleConfiguration(

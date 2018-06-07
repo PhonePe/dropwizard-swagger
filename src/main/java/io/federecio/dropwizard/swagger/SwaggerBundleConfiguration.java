@@ -14,14 +14,16 @@
  */
 package io.federecio.dropwizard.swagger;
 
+import io.federecio.dropwizard.swagger.auth.AuthConfig;
+import io.swagger.models.Contact;
+import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
-import io.federecio.dropwizard.swagger.auth.AuthConfig;
 import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.models.Contact;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.annotation.Nullable;
 
 /**
  * For the meaning of all these properties please refer to Swagger documentation
@@ -37,22 +39,48 @@ public class SwaggerBundleConfiguration {
      * {@link io.swagger.annotations.Api} annotated resources
      */
     @NotEmpty
-    private String resourcePackage;
+    private String resourcePackage = "";
 
+    @Nullable
     private String title;
+
+    @Nullable
     private String version;
+
+    @Nullable
     private String description;
+
+    @Nullable
     private String termsOfServiceUrl;
+
+    @Nullable
     private String contact;
+
+    @Nullable
     private String contactEmail;
+
+    @Nullable
     private String contactUrl;
+
+    @Nullable
     private String license;
+
+    @Nullable
     private String licenseUrl;
+
     private SwaggerViewConfiguration swaggerViewConfiguration = new SwaggerViewConfiguration();
-    private Boolean prettyPrint = true;
+    private SwaggerOAuth2Configuration swaggerOAuth2Configuration = new SwaggerOAuth2Configuration();
+    private boolean prettyPrint = true;
+
+    @Nullable
     private String host;
-    private String[] schemes = new String[]{"http"};
-    private Boolean enabled = true;
+
+    private String contextRoot = "/";
+    private String[] schemes = new String[] { "http" };
+    private boolean enabled = true;
+    private boolean includeSwaggerResource = true;
+
+    @Nullable
     private AuthConfig auth;
 
     /**
@@ -66,7 +94,7 @@ public class SwaggerBundleConfiguration {
      * initialized by that time and so does not know you set the path
      * programmatically.
      */
-    @JsonProperty
+    @Nullable
     private String uriPrefix;
 
     @JsonProperty
@@ -79,103 +107,113 @@ public class SwaggerBundleConfiguration {
         this.resourcePackage = resourcePackage;
     }
 
+    @Nullable
     @JsonProperty
     public String getTitle() {
         return title;
     }
 
     @JsonProperty
-    public void setTitle(String title) {
+    public void setTitle(@Nullable String title) {
         this.title = title;
     }
 
+    @Nullable
     @JsonProperty
     public String getVersion() {
         return version;
     }
 
     @JsonProperty
-    public void setVersion(String version) {
+    public void setVersion(@Nullable String version) {
         this.version = version;
     }
 
+    @Nullable
     @JsonProperty
     public String getDescription() {
         return description;
     }
 
     @JsonProperty
-    public void setDescription(String description) {
+    public void setDescription(@Nullable String description) {
         this.description = description;
     }
 
+    @Nullable
     @JsonProperty
     public String getTermsOfServiceUrl() {
         return termsOfServiceUrl;
     }
 
     @JsonProperty
-    public void setTermsOfServiceUrl(String termsOfServiceUrl) {
+    public void setTermsOfServiceUrl(@Nullable String termsOfServiceUrl) {
         this.termsOfServiceUrl = termsOfServiceUrl;
     }
 
+    @Nullable
     @JsonProperty
     public String getContact() {
         return contact;
     }
 
     @JsonProperty
-    public void setContact(String contact) {
+    public void setContact(@Nullable String contact) {
         this.contact = contact;
     }
 
+    @Nullable
     @JsonProperty
     public String getContactEmail() {
         return contactEmail;
     }
 
     @JsonProperty
-    public void setContactEmail(String contactEmail) {
+    public void setContactEmail(@Nullable String contactEmail) {
         this.contactEmail = contactEmail;
     }
 
+    @Nullable
     @JsonProperty
     public String getContactUrl() {
         return contactUrl;
     }
 
     @JsonProperty
-    public void setContactUrl(String contactUrl) {
+    public void setContactUrl(@Nullable String contactUrl) {
         this.contactUrl = contactUrl;
     }
 
+    @Nullable
     @JsonProperty
     public String getLicense() {
         return license;
     }
 
     @JsonProperty
-    public void setLicense(String license) {
+    public void setLicense(@Nullable String license) {
         this.license = license;
     }
 
+    @Nullable
     @JsonProperty
     public String getLicenseUrl() {
         return licenseUrl;
     }
 
     @JsonProperty
-    public void setLicenseUrl(String licenseUrl) {
+    public void setLicenseUrl(@Nullable String licenseUrl) {
         this.licenseUrl = licenseUrl;
     }
 
+    @Nullable
     @JsonProperty
     public String getUriPrefix() {
         return uriPrefix;
     }
 
     @JsonProperty
-    public void setUriPrefix(String uriPrefix) {
+    public void setUriPrefix(@Nullable String uriPrefix) {
         this.uriPrefix = uriPrefix;
     }
 
@@ -191,6 +229,17 @@ public class SwaggerBundleConfiguration {
     }
 
     @JsonProperty
+    public SwaggerOAuth2Configuration getSwaggerOAuth2Configuration() {
+        return swaggerOAuth2Configuration;
+    }
+
+    @JsonProperty("oauth2")
+    public void setSwaggerOAuth2Configuration(
+            final SwaggerOAuth2Configuration swaggerOAuth2Configuration) {
+        this.swaggerOAuth2Configuration = swaggerOAuth2Configuration;
+    }
+
+    @JsonProperty
     public boolean isPrettyPrint() {
         return prettyPrint;
     }
@@ -200,14 +249,25 @@ public class SwaggerBundleConfiguration {
         this.prettyPrint = isPrettyPrint;
     }
 
+    @Nullable
     @JsonProperty
     public String getHost() {
         return host;
     }
 
     @JsonProperty
-    public void setHost(String host) {
+    public void setHost(@Nullable String host) {
         this.host = host;
+    }
+
+    @JsonProperty
+    public String getContextRoot() {
+        return contextRoot;
+    }
+
+    @JsonProperty
+    public void setContextRoot(String contextRoot) {
+        this.contextRoot = contextRoot;
     }
 
     @JsonProperty
@@ -230,6 +290,16 @@ public class SwaggerBundleConfiguration {
         this.enabled = isEnabled;
     }
 
+    @JsonProperty
+    public boolean isIncludeSwaggerResource() {
+        return includeSwaggerResource;
+    }
+
+    @JsonProperty
+    public void setIncludeSwaggerResource(final boolean include) {
+        this.includeSwaggerResource = include;
+    }
+
     @JsonIgnore
     public BeanConfig build(String urlPattern) {
         if (Strings.isNullOrEmpty(resourcePackage)) {
@@ -247,14 +317,16 @@ public class SwaggerBundleConfiguration {
         config.setLicenseUrl(licenseUrl);
         config.setTermsOfServiceUrl(termsOfServiceUrl);
         config.setPrettyPrint(prettyPrint);
-        config.setBasePath(urlPattern);
+        config.setBasePath(
+                ("/".equals(contextRoot) ? "" : contextRoot) + urlPattern);
         config.setResourcePackage(resourcePackage);
         config.setSchemes(schemes);
         config.setHost(host);
         config.setScan(true);
 
-        // Assign contact email/url after scan, since BeanConfig.scan will create a new info.Contact instance, thus
-        // overriding any info.Contact settings prior to scan.
+        // Assign contact email/url after scan, since BeanConfig.scan will
+        // create a new info.Contact instance, thus overriding any info.Contact
+        // settings prior to scan.
         if (contactEmail != null || contactUrl != null) {
             if (config.getInfo().getContact() == null) {
                 config.getInfo().setContact(new Contact());
@@ -269,13 +341,14 @@ public class SwaggerBundleConfiguration {
         return config;
     }
 
+    @Nullable
     @JsonProperty
     public AuthConfig getAuth() {
         return auth;
     }
 
     @JsonProperty
-    public void setAuth(AuthConfig auth) {
+    public void setAuth(@Nullable AuthConfig auth) {
         this.auth = auth;
     }
 }

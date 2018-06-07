@@ -16,6 +16,7 @@ package io.federecio.dropwizard.swagger.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,20 +25,25 @@ import java.util.List;
  * @author jay
  */
 public class UserConfig implements Serializable {
+    @Nullable
     private String name;
+
+    @Nullable
     private String password;
+
     private List<String> roles = new ArrayList<>();
 
     public UserConfig(String name, String password, List<String> roles) {
         this.name = name;
         this.password = password;
-        this.roles = roles;
+        this.roles = roles == null ? new ArrayList<>() : roles;
     }
 
     public UserConfig() {
 
     }
 
+    @Nullable
     @JsonProperty
     public String getPassword() {
         return password;
@@ -48,6 +54,7 @@ public class UserConfig implements Serializable {
         this.password = password;
     }
 
+    @Nullable
     @JsonProperty
     public String getName() {
         return name;

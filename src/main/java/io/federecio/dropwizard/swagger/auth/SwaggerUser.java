@@ -14,6 +14,7 @@
  */
 package io.federecio.dropwizard.swagger.auth;
 
+import javax.annotation.Nullable;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;

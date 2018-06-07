@@ -47,7 +47,7 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, Swag
     @Override
     public Optional<SwaggerUser> authenticate(BasicCredentials credentials) throws AuthenticationException {
         if (userPasswordMap.containsKey(credentials.getUsername()) && userPasswordMap.get(credentials.getUsername()).equals(encryptPassword(credentials.getPassword()))) {
-            return Optional.of(new SwaggerUser(credentials.getUsername(), userRolesMap.get(credentials.getUsername())));
+            return Optional.of(new SwaggerUser(credentials.getUsername(), userRolesMap.getOrDefault(credentials.getUsername(), new HashSet<>())));
         }
         return Optional.empty();
     }

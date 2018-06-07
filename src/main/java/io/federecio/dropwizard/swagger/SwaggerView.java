@@ -16,6 +16,8 @@ package io.federecio.dropwizard.swagger;
 
 import java.nio.charset.StandardCharsets;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import io.dropwizard.views.View;
 
 /**
@@ -78,6 +80,7 @@ public class SwaggerView extends View {
     /**
      * Returns the title for the browser header
      */
+    @Nullable
     public String getTitle() {
         return viewConfiguration.getPageTitle();
     }
@@ -101,6 +104,7 @@ public class SwaggerView extends View {
     /**
      * Returns the location of the validator URL or null to disable
      */
+    @Nullable
     public String getValidatorUrl() {
         return viewConfiguration.getValidatorUrl();
     }
@@ -118,4 +122,5 @@ public class SwaggerView extends View {
     public boolean getShowApiSelector() {
         return viewConfiguration.isShowApiSelector();
     }
+
 }

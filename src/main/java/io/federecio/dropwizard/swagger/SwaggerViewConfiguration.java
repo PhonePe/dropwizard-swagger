@@ -13,6 +13,8 @@
  */
 package io.federecio.dropwizard.swagger;
 
+import javax.annotation.Nullable;
+
 /**
  * Contains all configurable parameters required to render the SwaggerUI View
  * from the default template
@@ -23,9 +25,15 @@ public class SwaggerViewConfiguration {
     private static final String DEFAULT_TEMPLATE = "index.ftl";
     private static final String DEFAULT_HEADER_COLOR = "#89bf04";
 
+    @Nullable
     private String pageTitle;
+
+    @Nullable
     private String templateUrl;
+
+    @Nullable
     private String validatorUrl;
+
     private boolean showApiSelector;
     private boolean showAuth;
     private String headerColor;
@@ -67,27 +75,30 @@ public class SwaggerViewConfiguration {
         this.headerColor = headerColor;
     }
 
+    @Nullable
     public String getPageTitle() {
         return pageTitle;
     }
 
-    public void setPageTitle(String title) {
+    public void setPageTitle(@Nullable String title) {
         this.pageTitle = title;
     }
 
+    @Nullable
     public String getTemplateUrl() {
         return templateUrl;
     }
 
-    public void setTemplateUrl(String templateUrl) {
+    public void setTemplateUrl(@Nullable String templateUrl) {
         this.templateUrl = templateUrl;
     }
 
+    @Nullable
     public String getValidatorUrl() {
         return validatorUrl;
     }
 
-    public void setValidatorUrl(String validatorUrl) {
+    public void setValidatorUrl(@Nullable String validatorUrl) {
         this.validatorUrl = validatorUrl;
     }
 
